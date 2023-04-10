@@ -4,11 +4,14 @@ set(PROJECT_NAME AutoBattler)
 project(${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME}
-	Sources/main.cpp
-	Sources/Renderer/ShaderProgram.cpp
-	Sources/Renderer/ShaderProgram.h
-	Sources/Resources/ResourceManager.cpp
-	Sources/Resources/ResourceManager.h
+	src/main.cpp
+	src/Renderer/ShaderProgram.cpp
+	src/Renderer/ShaderProgram.h
+	src/Resources/ResourceManager.cpp
+	src/Resources/ResourceManager.h
+	src/Resources/stb_image.h
+	src/Renderer/Texture2D.cpp
+	src/Renderer/Texture2D.h
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
