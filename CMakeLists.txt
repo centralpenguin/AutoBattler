@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 
+add_compile_options(
+    -Wall
+)
+
 set(PROJECT_NAME AutoBattler)
 project(${PROJECT_NAME})
 
@@ -8,6 +12,8 @@ add_executable(${PROJECT_NAME}
 	src/Renderer/ShaderProgram.cpp
 	src/Renderer/ShaderProgram.h
 	src/Resources/ResourceManager.cpp
+	src/Renderer/Sprite.cpp
+	src/Renderer/Sprite.h
 	src/Resources/ResourceManager.h
 	src/Resources/stb_image.h
 	src/Renderer/Texture2D.cpp
