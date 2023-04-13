@@ -23,7 +23,7 @@ namespace Renderer
 		Sprite(const Sprite&) = delete;
 		Sprite& operator = (const Sprite&) = delete;
 
-		void renderer() const;
+		void render() const;
 		void setPosition(const glm::vec2& position);
 		void setSize(const glm::vec2& size);
 		void setRotation(const float rotation);
@@ -33,5 +33,8 @@ namespace Renderer
 		glm::vec2 m_position;
 		glm::vec2 m_size;
 		float m_rotation;
+		GLuint m_VAO;
+		GLuint m_vertexCoordsVBO;
+		GLuint m_textureCoordsVBO;
 	};
 }
