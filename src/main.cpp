@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include "Renderer/ShaderProgram.h"
 #include "Resources/ResourceManager.h"
@@ -28,6 +29,7 @@ GLfloat texCoord[] = {
     1.0f, 0.0f,
     0.0f, 0.0f
 };
+
 
 glm::ivec2 g_windowSize(640, 480);
 
@@ -100,9 +102,12 @@ int main(int argc, char** argv)
             return -1;
         }
 
-        auto tex = resourceManager.loadTexture("DefaultTexture", "res/textures/map_16x16.png");
+        auto tex = resourceManager.loadTexture("DefaultTexture", "res/textures/pokemon.png");
 
-        auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTexture", "SpriteShader", 50, 100);
+        std::vector<std::string> subTexturesNames = { "block", "topBlock", "bottomBlock", "leftBlock", "rightBlock", "topLeftBlock", "topRightBlock", "bottomLeftBlock", "bottomRightBlock", "beton" };
+        auto pTextureAtlas = resourceManager.loatTextureAtlas("DefaultTextureAtlas", "res/textures/pokemon.png", std::move(subTexturesNames), 900, 900);
+
+        auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
         pSprite->setPosition(glm::vec2(300, 100));
 
         GLuint points_vbo = 0;
