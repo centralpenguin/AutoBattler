@@ -104,11 +104,21 @@ int main(int argc, char** argv)
 
         auto tex = resourceManager.loadTexture("DefaultTexture", "res/textures/pokemon.png");
 
-        std::vector<std::string> subTexturesNames = { "block", "topBlock", "bottomBlock", "leftBlock", "rightBlock", "topLeftBlock", "topRightBlock", "bottomLeftBlock", "bottomRightBlock", "beton" };
+        std::vector<std::string> subTexturesNames = {
+            "block",
+            "topBlock",
+            "bottomBlock",
+            "leftBlock",
+            "rightBlock",
+            "topLeftBlock",
+            "topRightBlock",
+            "bottomLeftBlock",
+            "bottomRightBlock",
+            "beton" };
         auto pTextureAtlas = resourceManager.loatTextureAtlas("DefaultTextureAtlas", "res/textures/pokemon.png", std::move(subTexturesNames), 900, 900);
 
-        auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
-        pSprite->setPosition(glm::vec2(300, 100));
+        //auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+        //pSprite->setPosition(glm::vec2(300, 100));
 
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
@@ -174,7 +184,7 @@ int main(int argc, char** argv)
             pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_2);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
-            pSprite->render();
+            //pSprite->render();
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
