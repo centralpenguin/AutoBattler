@@ -195,16 +195,19 @@ int main(int argc, char** argv)
         pDefaultShaderProgram->use();
         pDefaultShaderProgram->setInt("tex", 0);
 
-        //glm::mat4 modelMatrix_1 = glm::mat4(1.f);
-        //modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(100.f, 50.f, 0.f));
-        //triangles with pikachu
+        //glm::mat4 modelMatrix_1 = glm::mat4(4.f);
+        //modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(400.f, 100.f, 0.f));
+
         //glm::mat4 modelMatrix_2 = glm::mat4(1.f);
         //modelMatrix_2 = glm::translate(modelMatrix_2, glm::vec3(590.f, 50.f, 0.f));
 
-        glm::mat4 projectionMatrix = glm::ortho(0.f,
-            static_cast<float>(g_windowSize.x), 0.f,
+        glm::mat4 projectionMatrix = glm::ortho(
+            0.f,
+            static_cast<float>(g_windowSize.x),
+            0.f,
             static_cast<float>(g_windowSize.y),
-            -100.f, 100.f);
+            -100.f,
+            100.f);
 
         pDefaultShaderProgram->setMatrix4(
             "projectionMat", projectionMatrix);
