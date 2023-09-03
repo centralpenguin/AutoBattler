@@ -11,12 +11,16 @@ namespace Renderer {
         const glm::vec2& position,
         const glm::vec2& size,
         const float rotation)
-        : Sprite(std::move(pTexture), std::move(initialSubTexture), std::move(pShaderProgram), position, size, rotation)
+        : Sprite(std::move(pTexture),
+            std::move(initialSubTexture),
+            std::move(pShaderProgram),
+            position, size, rotation)
     {
         m_pCurrentAnimationDurations = m_statesMap.end();
     }
       
-    void AnimatedSprite::insertState(std::string state, std::vector<std::pair<std::string, uint64_t>> subTexturesDuration)
+    void AnimatedSprite::insertState(std::string state,
+        std::vector<std::pair<std::string, uint64_t>> subTexturesDuration)
     {
         m_statesMap.emplace(std::move(state), std::move(subTexturesDuration));
     }

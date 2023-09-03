@@ -22,7 +22,8 @@ ResourceManager::ResourceManager(const std::string& executablePath)
 std::string ResourceManager::getFileString(const std::string& relativeFilePath) const
 {
     std::ifstream f;
-    f.open(m_path + "/" + relativeFilePath.c_str(), std::ios::in | std::ios::binary);
+    f.open(m_path + "/" + relativeFilePath.c_str(),
+        std::ios::in | std::ios::binary);
     if (!f.is_open())
     {
         std::cerr << "Failed to open file: " << relativeFilePath << std::endl;
@@ -121,16 +122,22 @@ std::shared_ptr<Renderer::Sprite> ResourceManager::loadSprite(const std::string&
     auto pTexture = getTexture(textureName);
     if (!pTexture)
     {
-        std::cerr << "Can't find the texture: " << textureName << " for the sprite: " << spriteName << std::endl;
+        std::cerr << "Can't find the texture: "
+            << textureName << " for the sprite: "
+            << spriteName << std::endl;
     }
 
     auto pShader = getShaderProgram(shaderName);
     if (!pShader)
     {
-        std::cerr << "Can't find the shader: " << shaderName << " for the sprite: " << spriteName << std::endl;
+        std::cerr << "Can't find the shader: "
+            << shaderName << " for the sprite: "
+            << spriteName << std::endl;
     }
 
-    std::shared_ptr<Renderer::Sprite> newSprite = m_sprites.emplace(textureName, std::make_shared<Renderer::Sprite>(pTexture,
+    std::shared_ptr<Renderer::Sprite> newSprite = 
+        m_sprites.emplace(textureName,
+        std::make_shared<Renderer::Sprite>(pTexture,
         subTextureName,
         pShader,
         glm::vec2(0.f, 0.f),
@@ -149,13 +156,17 @@ std::shared_ptr<Renderer::AnimatedSprite> ResourceManager::loadAnimatedSprite(co
     auto pTexture = getTexture(textureName);
     if (!pTexture)
     {
-        std::cerr << "Can't find the texture: " << textureName << " for the sprite: " << spriteName << std::endl;
+        std::cerr << "Can't find the texture: "
+            << textureName << " for the sprite: "
+            << spriteName << std::endl;
     }
 
     auto pShader = getShaderProgram(shaderName);
     if (!pShader)
     {
-        std::cerr << "Can't find the shader: " << shaderName << " for the sprite: " << spriteName << std::endl;
+        std::cerr << "Can't find the shader: "
+            << shaderName << " for the sprite: "
+            << spriteName << std::endl;
     }
 
     std::shared_ptr<Renderer::AnimatedSprite> newSprite = m_animatedSprites.emplace(textureName, std::make_shared<Renderer::AnimatedSprite>(pTexture,
