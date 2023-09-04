@@ -53,13 +53,15 @@ namespace Renderer {
 
         glGenBuffers(1, &m_vertexCoordsVBO);
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexCoordsVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexCoords), &vertexCoords, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER,
+            sizeof(vertexCoords), &vertexCoords, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glGenBuffers(1, &m_textureCoordsVBO);
         glBindBuffer(GL_ARRAY_BUFFER, m_textureCoordsVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoords), &textureCoords, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER,
+            sizeof(textureCoords), &textureCoords, GL_STATIC_DRAW);
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
@@ -81,9 +83,12 @@ namespace Renderer {
         glm::mat4 model(1.f);
 
         model = glm::translate(model, glm::vec3(m_position, 0.f));
-        model = glm::translate(model, glm::vec3(0.5f * m_size.x, 0.5f * m_size.y, 0.f));
-        model = glm::rotate(model, glm::radians(m_rotation), glm::vec3(0.f, 0.f, 1.f));
-        model = glm::translate(model, glm::vec3(-0.5f * m_size.x, -0.5f * m_size.y, 0.f));
+        model = glm::translate(model,
+            glm::vec3(0.5f * m_size.x, 0.5f * m_size.y, 0.f));
+        model = glm::rotate(model,
+            glm::radians(m_rotation), glm::vec3(0.f, 0.f, 1.f));
+        model = glm::translate(model,
+            glm::vec3(-0.5f * m_size.x, -0.5f * m_size.y, 0.f));
         model = glm::scale(model, glm::vec3(m_size, 1.f));
 
         glBindVertexArray(m_VAO);

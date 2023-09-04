@@ -10,13 +10,15 @@ namespace Renderer {
 		GLuint vertexShaderID;
 		if (!createShader(vertexShader, GL_VERTEX_SHADER, vertexShaderID))
 		{
-			std::cerr << "VERTEX SHADER compile-time error" << std::endl;
+			std::cerr << "VERTEX SHADER compile-time error"
+				<< std::endl;
 			return;
 		}
 		GLuint fragmentShaderID;
 		if (!createShader(fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderID))
 		{
-			std::cerr << "FRAGMENT SHADER compile-time error" << std::endl;
+			std::cerr << "FRAGMENT SHADER compile-time error"
+				<< std::endl;
 			glDeleteShader(vertexShaderID);
 			return;
 		}
@@ -31,7 +33,8 @@ namespace Renderer {
 		{
 			GLchar infoLog[1024];
 			glGetShaderInfoLog(m_ID, 1024, nullptr, infoLog);
-			std::cerr << "ERROR::SHADER: LINK-time error:\n" << infoLog << std::endl;
+			std::cerr << "ERROR::SHADER: LINK-time error:\n"
+				<< infoLog << std::endl;
 		}
 		else
 		{
@@ -53,7 +56,8 @@ namespace Renderer {
 		{
 			GLchar infoLog[1024];
 			glGetShaderInfoLog(shaderID, 1024, nullptr, infoLog);
-			std::cerr << "ERROR::SHADER: COMPILE-time error:\n" << infoLog << std::endl;
+			std::cerr << "ERROR::SHADER: COMPILE-time error:\n"
+				<< infoLog << std::endl;
 			return false;
 		}
 		return true;
@@ -92,6 +96,7 @@ namespace Renderer {
 	}
 	void ShaderProgram::setMatrix4(const std::string& name, const glm::mat4& matrix)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(glGetUniformLocation(m_ID,
+			name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

@@ -22,7 +22,8 @@ namespace Renderer {
     void AnimatedSprite::insertState(std::string state,
         std::vector<std::pair<std::string, uint64_t>> subTexturesDuration)
     {
-        m_statesMap.emplace(std::move(state), std::move(subTexturesDuration));
+        m_statesMap.emplace(std::move(state),
+            std::move(subTexturesDuration));
     }
 
     void AnimatedSprite::setState(const std::string& newState)
@@ -30,7 +31,8 @@ namespace Renderer {
         auto it = m_statesMap.find(newState);
         if (it != m_statesMap.end())
         {
-            std::cout << "No animation state: " << newState << std::endl;
+            std::cout << "No animation state: "
+                << newState << std::endl;
             return;
         }
 
@@ -48,13 +50,16 @@ namespace Renderer {
         if (m_pCurrentAnimationDurations != m_statesMap.end())
         {
             m_currentAnimationTime += delta;
-            while (m_currentAnimationTime >= m_pCurrentAnimationDurations->second[m_currentFrame].second)
+            while (m_currentAnimationTime >=
+                m_pCurrentAnimationDurations->second[m_currentFrame].second)
             {
-                m_currentAnimationTime -= m_pCurrentAnimationDurations->second[m_currentFrame].second;
+                m_currentAnimationTime -=
+                    m_pCurrentAnimationDurations->second[m_currentFrame].second;
                 m_currentFrame++;
                 m_dirty = true;
             }
-            if (m_currentFrame == m_pCurrentAnimationDurations->second.size())
+            if (m_currentFrame ==
+                m_pCurrentAnimationDurations->second.size())
             {
                 m_currentFrame = 0;
             }
@@ -65,7 +70,8 @@ namespace Renderer {
     {
         if (m_dirty)
         {
-            auto subTexture = m_pTexture->getSubTexture(m_pCurrentAnimationDurations->second[m_currentFrame].first);
+            auto subTexture =
+                m_pTexture->getSubTexture(m_pCurrentAnimationDurations->second[m_currentFrame].first);
 
             const GLfloat textureCoords[] = {
                 // U  V
@@ -79,7 +85,8 @@ namespace Renderer {
             };
 
             glBindBuffer(GL_ARRAY_BUFFER, m_textureCoordsVBO);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(textureCoords), &textureCoords);
+            glBufferSubData(GL_ARRAY_BUFFER, 0,
+                sizeof(textureCoords), &textureCoords);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             m_dirty = false;
         }
