@@ -26,7 +26,8 @@ std::string ResourceManager::getFileString(const std::string& relativeFilePath) 
         std::ios::in | std::ios::binary);
     if (!f.is_open())
     {
-        std::cerr << "Failed to open file: " << relativeFilePath << std::endl;
+        std::cerr << "Failed to open file: "
+            << relativeFilePath << std::endl;
         return std::string{};
     }
 
@@ -51,7 +52,10 @@ std::shared_ptr<Renderer::ShaderProgram> ResourceManager::loadShaders(const std:
         return nullptr;
     }
 
-    std::shared_ptr<Renderer::ShaderProgram>& newShader = m_shaderPrograms.emplace(shaderName, std::make_shared<Renderer::ShaderProgram>(vertexString, fragmentxString)).first->second;
+    std::shared_ptr<Renderer::ShaderProgram>& newShader = 
+        m_shaderPrograms.emplace(shaderName,
+            std::make_shared<Renderer::ShaderProgram>(vertexString,
+                fragmentxString)).first->second;
     if (newShader->isCompiled())
     {
         return newShader;
@@ -67,12 +71,14 @@ std::shared_ptr<Renderer::ShaderProgram> ResourceManager::loadShaders(const std:
 
 std::shared_ptr<Renderer::ShaderProgram> ResourceManager::getShaderProgram(const std::string& shaderName)
 {
-    ShaderProgramsMap::const_iterator it = m_shaderPrograms.find(shaderName);
+    ShaderProgramsMap::const_iterator it = 
+        m_shaderPrograms.find(shaderName);
     if (it != m_shaderPrograms.end())
     {
         return it->second;
     }
-    std::cerr << "Can't find the shader program: " << shaderName << std::endl;
+    std::cerr << "Can't find the shader program: " 
+        << shaderName << std::endl;
     return nullptr;
 }
 
@@ -83,20 +89,27 @@ std::shared_ptr<Renderer::Texture2D> ResourceManager::loadTexture(const std::str
     int width = 0;
     int height = 0;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* pixels = stbi_load(std::string(m_path + "/" + texturePath).c_str(), &width, &height, &channels, 0);
+    unsigned char* pixels = stbi_load(
+        std::string(m_path + "/" + texturePath).c_str(),
+        &width, &height, &channels, 0);
 
     if (!pixels)
     {
-        std::cerr << "Can't load image: " << texturePath << std::endl;
+        std::cerr << "Can't load image: "
+            << texturePath << std::endl;
         return nullptr;
     }
 
-    std::shared_ptr<Renderer::Texture2D> newTexture = m_textures.emplace(textureName, std::make_shared<Renderer::Texture2D>(width,
-        height,
-        pixels,
-        channels,
-        GL_NEAREST,
-        GL_CLAMP_TO_EDGE)).first->second;
+    std::shared_ptr<Renderer::Texture2D> newTexture =
+        m_textures.emplace(
+            textureName,
+            std::make_shared<Renderer::Texture2D>(
+                width,
+                height,
+                pixels,
+                channels,
+                GL_NEAREST,
+                GL_CLAMP_TO_EDGE)).first->second;
     stbi_image_free(pixels);
     return newTexture;
 }
@@ -108,7 +121,8 @@ std::shared_ptr<Renderer::Texture2D> ResourceManager::getTexture(const std::stri
     {
         return it->second;
     }
-    std::cerr << "Can't find the texture: " << textureName << std::endl;
+    std::cerr << "Can't find the texture: " 
+        << textureName << std::endl;
     return nullptr;
 }
 
@@ -185,7 +199,8 @@ std::shared_ptr<Renderer::Sprite> ResourceManager::getSprite(const std::string& 
     {
         return it->second;
     }
-    std::cerr << "Can't find the sprite: " << spriteName << std::endl;
+    std::cerr << "Can't find the sprite: " 
+        << spriteName << std::endl;
     return nullptr;
 }
 
@@ -196,17 +211,22 @@ std::shared_ptr<Renderer::AnimatedSprite> ResourceManager::getAnimatedSprite(con
     {
         return it->second;
     }
-    std::cerr << "Can't find animated sprite: " << spriteName << std::endl;
+    std::cerr << "Can't find animated sprite: " 
+        << spriteName << std::endl;
     return nullptr;
 }
 
-std::shared_ptr<Renderer::Texture2D> ResourceManager::loatTextureAtlas(std::string textureName,
-                                                                       std::string texturePath,
-                                                                       std::vector<std::string> subTextures,
-                                                                       const unsigned int subTextureWidth,
-                                                                       const unsigned int subTextureHeight)
+std::shared_ptr<Renderer::Texture2D> ResourceManager::loatTextureAtlas
+(
+    std::string textureName,
+    std::string texturePath,
+    std::vector<std::string> subTextures,
+    const unsigned int subTextureWidth,
+    const unsigned int subTextureHeight
+)
 {
-    auto pTexture = loadTexture(std::move(textureName), std::move(texturePath));
+    auto pTexture = loadTexture(std::move(textureName),
+        std::move(texturePath));
     if (pTexture)
     {
         const unsigned int textureWidth = pTexture->width();
@@ -215,9 +235,27 @@ std::shared_ptr<Renderer::Texture2D> ResourceManager::loatTextureAtlas(std::stri
         unsigned int currentTextureOffsetY = textureHeight;
         for (auto& currentSubTextureName : subTextures)
         {
-            glm::vec2 leftBottomUV(static_cast<float>(currentTextureOffsetX) / textureWidth, static_cast<float>(currentTextureOffsetY - subTextureHeight) / textureHeight);
-            glm::vec2 rightTopUV(static_cast<float>(currentTextureOffsetX + subTextureWidth) / textureWidth, static_cast<float>(currentTextureOffsetY) / textureHeight);
-            pTexture->addSubTexture(std::move(currentSubTextureName), leftBottomUV, rightTopUV);
+            glm::vec2 leftBottomUV(static_cast<float>
+                (
+                currentTextureOffsetX
+                ) / textureWidth,
+                static_cast<float>
+                (
+                    currentTextureOffsetY - subTextureHeight
+                ) / textureHeight);
+            glm::vec2 rightTopUV(static_cast<float>
+                (
+                currentTextureOffsetX + subTextureWidth
+                ) / textureWidth,
+                static_cast<float>
+                (
+                    currentTextureOffsetY
+                ) / textureHeight);
+            pTexture->addSubTexture
+            (
+                std::move(currentSubTextureName),
+                leftBottomUV, rightTopUV
+            );
 
             currentTextureOffsetX += subTextureWidth;
             if (currentTextureOffsetX >= textureWidth)

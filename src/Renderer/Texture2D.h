@@ -15,7 +15,8 @@ namespace Renderer {
             glm::vec2 leftBottomUV;
             glm::vec2 rightTopUV;
 
-            SubTexture2D(const glm::vec2& _leftBottomUV, const glm::vec2& _rightTopUV)
+            SubTexture2D(const glm::vec2& _leftBottomUV,
+                const glm::vec2& _rightTopUV)
                 : leftBottomUV(_leftBottomUV)
                 , rightTopUV(_rightTopUV)
             {}
@@ -39,7 +40,9 @@ namespace Renderer {
         Texture2D(Texture2D&& texture2d);
         ~Texture2D();
 
-        void addSubTexture(std::string name, const glm::vec2& leftBottomUV, const glm::vec2& rightTopUV);
+        void addSubTexture(std::string name,
+            const glm::vec2& leftBottomUV,
+            const glm::vec2& rightTopUV);
         const SubTexture2D& getSubTexture(const std::string& name) const;
         unsigned int width() const { return m_width; }
         unsigned int height() const { return m_height; }
