@@ -155,14 +155,17 @@ int main(int argc, char** argv)
             860, 618);
 
         auto pSprite = resourceManager.loadSprite("NewSprite",
-            "DefaultTextureAtlas", "SpriteShader", 200, 200, "beton");
-                                                 // размер на экране
-        pSprite->setPosition(glm::vec2(300, 100));
+            "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+                                                 // size in the window
+        pSprite->setPosition(glm::vec2(400, 200));
+                                // coordinates of pic
 
         auto pAnimatedSprite = resourceManager.loadAnimatedSprite(
             "NewAnimatedSprite", "DefaultTextureAtlas", "SpriteShader",
-            100, 100, "beton");
-        pAnimatedSprite->setPosition(glm::vec2(300, 400));
+            200, 200, "beton");
+            // size in the window
+        pAnimatedSprite->setPosition(glm::vec2(100, 200));
+                                                // position
         std::vector<std::pair<std::string, uint64_t>> waterState;
         waterState.emplace_back(std::make_pair<std::string, uint64_t>(
             "rightmboarleft", 1000000));
@@ -219,11 +222,13 @@ int main(int argc, char** argv)
 
         glm::mat4 modelMatrix_1 = glm::mat4(4.f);
         modelMatrix_1 = glm::translate(modelMatrix_1,
-            glm::vec3(100.f, 100.f, 0.f));
+            glm::vec3(300.f, 100.f, 0.f));
+                    // coords of traingle
 
         glm::mat4 modelMatrix_2 = glm::mat4(1.f);
         modelMatrix_2 = glm::translate(modelMatrix_2,
-            glm::vec3(500.f, 100.f, 0.f));
+            glm::vec3(600.f, 100.f, 0.f));
+                    // coords of right traingle
 
         glm::mat4 projectionMatrix = glm::ortho(
             0.f,
