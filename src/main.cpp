@@ -155,7 +155,8 @@ int main(int argc, char** argv)
             860, 618);
 
         auto pSprite = resourceManager.loadSprite("NewSprite",
-            "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+            "DefaultTextureAtlas", "SpriteShader", 200, 200, "beton");
+                                                 // размер на экране
         pSprite->setPosition(glm::vec2(300, 100));
 
         auto pAnimatedSprite = resourceManager.loadAnimatedSprite(
