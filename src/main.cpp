@@ -14,13 +14,13 @@
 #include "Renderer/Sprite.h"
 #include "Renderer/AnimatedSprite.h"
 
-GLfloat point[] = {
-     0.0f,  50.f, 0.0f,
-     50.f, -50.f, 0.0f,
-    -50.f, -50.f, 0.0f
+GLfloat point[] = { // both triangles somehow
+     0.0f,  50.0f, 0.0f,  // top point x, top point y, ??? always zero
+     50.f, -50.f, 0.0f,   // right point x, right point y
+    -50.f, -50.f, 0.0f    // same
 };
 
-GLfloat colors[] = {
+GLfloat colors[] = { // ?
     1.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 1.0f
@@ -29,9 +29,14 @@ GLfloat colors[] = {
 GLfloat texCoord[] = {
     0.5f, 1.0f,
     1.0f, 0.0f,
-    0.0f, 0.0f
+    0.0f, 0.0f // rotates it?
 };
 
+//GLfloat texCoord[] = {
+//    0.5f, 1.0f,
+//    1.0f, 0.0f,
+//    0.0f, 0.0f
+//};
 
 glm::ivec2 g_windowSize(640, 480);
 
@@ -231,12 +236,12 @@ int main(int argc, char** argv)
                     // coords of right traingle
 
         glm::mat4 projectionMatrix = glm::ortho(
-            0.f,
+            0.f, // stretches to the left?
             static_cast<float>(g_windowSize.x),
-            0.f,
+            0.f, // stretches vertically?
             static_cast<float>(g_windowSize.y),
-            -100.f,
-            100.f);
+            -100.f, // ???
+            100.f); // ???
 
         pDefaultShaderProgram->setMatrix4(
             "projectionMat", projectionMatrix);
