@@ -217,10 +217,12 @@ int main(int argc, char** argv)
         pDefaultShaderProgram->setInt("tex", 0);
 
         glm::mat4 modelMatrix_1 = glm::mat4(4.f);
-        modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(100.f, 100.f, 0.f));
+        modelMatrix_1 = glm::translate(modelMatrix_1,
+            glm::vec3(100.f, 100.f, 0.f));
 
         glm::mat4 modelMatrix_2 = glm::mat4(1.f);
-        modelMatrix_2 = glm::translate(modelMatrix_2, glm::vec3(500.f, 100.f, 0.f));
+        modelMatrix_2 = glm::translate(modelMatrix_2,
+            glm::vec3(500.f, 100.f, 0.f));
 
         glm::mat4 projectionMatrix = glm::ortho(
             0.f,
@@ -244,7 +246,9 @@ int main(int argc, char** argv)
         while (!glfwWindowShouldClose(pWindow))
         {
             auto currentTime = std::chrono::high_resolution_clock::now();
-            uint64_t duration = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
+            uint64_t duration = 
+                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    currentTime - lastTime).count();
             pAnimatedSprite->update(duration );
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
