@@ -6,11 +6,13 @@
 
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include "Renderer/ShaderProgram.h"
 #include "Resources/ResourceManager.h"
 #include "Renderer/Texture2D.h"
 #include "Renderer/Sprite.h"
+#include "Renderer/AnimatedSprite.h"
 
 GLfloat point[] = {
      0.0f,  50.f, 0.0f,
@@ -152,9 +154,28 @@ int main(int argc, char** argv)
             std::move(subTexturesNames),
             860, 618);
 
-        //auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
-        //pSprite->setPosition(glm::vec2(300, 100));
+        auto pSprite = resourceManager.loadSprite("NewSprite",
+            "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+        pSprite->setPosition(glm::vec2(300, 100));
 
+        auto pAnimatedSprite = resourceManager.loadAnimatedSprite(
+            "NewAnimatedSprite", "DefaultTextureAtlas", "SpriteShader",
+            100, 100, "beton");
+        pAnimatedSprite->setPosition(glm::vec2(300, 400));
+        std::vector<std::pair<std::string, uint64_t>> waterState;
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
+            "rightmboarleft", 1000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
+            "rightemboarmiddle", 1000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
+            "rightemboarright", 1000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
+            "rightemboarmiddle", 1000000));
+
+        pAnimatedSprite->insertState("waterState", std::move(waterState));
+
+        pAnimatedSprite->setState("waterState");
+        
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
@@ -195,11 +216,11 @@ int main(int argc, char** argv)
         pDefaultShaderProgram->use();
         pDefaultShaderProgram->setInt("tex", 0);
 
-        //glm::mat4 modelMatrix_1 = glm::mat4(4.f);
-        //modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(400.f, 100.f, 0.f));
+        glm::mat4 modelMatrix_1 = glm::mat4(4.f);
+        modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(100.f, 100.f, 0.f));
 
-        //glm::mat4 modelMatrix_2 = glm::mat4(1.f);
-        //modelMatrix_2 = glm::translate(modelMatrix_2, glm::vec3(590.f, 50.f, 0.f));
+        glm::mat4 modelMatrix_2 = glm::mat4(1.f);
+        modelMatrix_2 = glm::translate(modelMatrix_2, glm::vec3(500.f, 100.f, 0.f));
 
         glm::mat4 projectionMatrix = glm::ortho(
             0.f,
@@ -217,9 +238,14 @@ int main(int argc, char** argv)
         pSpriteShaderProgram->setMatrix4(
             "projectionMat", projectionMatrix);
 
+        auto lastTime = std::chrono::high_resolution_clock::now();
+
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(pWindow))
         {
+            auto currentTime = std::chrono::high_resolution_clock::now();
+            uint64_t duration = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
+            pAnimatedSprite->update(duration );
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
@@ -227,13 +253,15 @@ int main(int argc, char** argv)
             glBindVertexArray(vao);
             tex->bind();
 
-            //pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_1);
-            //glDrawArrays(GL_TRIANGLES, 0, 3);
+            pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_1);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
 
-            //pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_2);
-            //glDrawArrays(GL_TRIANGLES, 0, 3);
+            pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_2);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
 
-            //pSprite->render();
+            pSprite->render();
+
+            pAnimatedSprite->render();
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
