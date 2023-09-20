@@ -40,6 +40,8 @@ GLfloat texCoord[] = {
 
 glm::ivec2 g_windowSize(640, 480);
 
+bool isEagle = false;
+
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     g_windowSize.x = width;
@@ -153,55 +155,39 @@ int main(int argc, char** argv)
             "topemboarmiddle",
         };
 
-        auto pTextureAtlas = resourceManager.loatTextureAtlas(
-            "DefaultTextureAtlas",
-            "res/textures/emboar.png",
-            std::move(subTexturesNames),
-            860, 618);
+        auto pTextureAtlas = resourceManager.loatTextureAtlas("DefaultTextureAtlas", "res/textures/emboar.png", std::move(subTexturesNames), 860, 618);
 
-        auto pSprite = resourceManager.loadSprite("NewSprite",
-            "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
-                                                 // size in the window
-        pSprite->setPosition(glm::vec2(400, 200));
-                                // coordinates of pic
+        auto pSprite = resourceManager.loadSprite("NewSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+        pSprite->setPosition(glm::vec2(300, 100));
 
-        auto pAnimatedSprite = resourceManager.loadAnimatedSprite(
-            "NewAnimatedSprite", "DefaultTextureAtlas", "SpriteShader",
-            200, 200, "beton");
-            // size in the window
-        pAnimatedSprite->setPosition(glm::vec2(100, 200));
-                                                // position
+        auto pAnimatedSprite = resourceManager.loadAnimatedSprite("NewAnimatedSprite", "DefaultTextureAtlas", "SpriteShader", 100, 100, "beton");
+        pAnimatedSprite->setPosition(glm::vec2(300, 300));
         std::vector<std::pair<std::string, uint64_t>> waterState;
-        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
-            "rightmboarleft", 1000000));
-        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
-            "rightemboarmiddle", 1000000));
-        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
-            "rightemboarright", 1000000));
-        waterState.emplace_back(std::make_pair<std::string, uint64_t>(
-            "rightemboarmiddle", 1000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>("water1", 1000000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>("water2", 1000000000));
+        waterState.emplace_back(std::make_pair<std::string, uint64_t>("water3", 1000000000));
+
+        std::vector<std::pair<std::string, uint64_t>> eagleState;
+        eagleState.emplace_back(std::make_pair<std::string, uint64_t>("eagle", 1000000000));
 
         pAnimatedSprite->insertState("waterState", std::move(waterState));
 
         pAnimatedSprite->setState("waterState");
-        
+
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
-        glBufferData(GL_ARRAY_BUFFER,
-            sizeof(point), point, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
 
         GLuint colors_vbo = 0;
         glGenBuffers(1, &colors_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
-        glBufferData(GL_ARRAY_BUFFER,
-            sizeof(colors), colors, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
         GLuint texCoord_vbo = 0;
         glGenBuffers(1, &texCoord_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
-        glBufferData(GL_ARRAY_BUFFER,
-            sizeof(texCoord), texCoord, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(texCoord), texCoord, GL_STATIC_DRAW);
 
         GLuint vao = 0;
         glGenVertexArrays(1, &vao);
@@ -209,58 +195,45 @@ int main(int argc, char** argv)
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
-        glVertexAttribPointer(0,
-            3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
-        glVertexAttribPointer(1,
-            3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glEnableVertexAttribArray(2);
         glBindBuffer(GL_ARRAY_BUFFER, texCoord_vbo);
-        glVertexAttribPointer(2,
-            2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         pDefaultShaderProgram->use();
         pDefaultShaderProgram->setInt("tex", 0);
 
-        glm::mat4 modelMatrix_1 = glm::mat4(4.f);
-        modelMatrix_1 = glm::translate(modelMatrix_1,
-            glm::vec3(300.f, 100.f, 0.f));
-                    // coords of traingle
+        //glm::mat4 modelMatrix_1 = glm::mat4(1.f);
+        //modelMatrix_1 = glm::translate(modelMatrix_1, glm::vec3(100.f, 50.f, 0.f));
 
-        glm::mat4 modelMatrix_2 = glm::mat4(1.f);
-        modelMatrix_2 = glm::translate(modelMatrix_2,
-            glm::vec3(600.f, 100.f, 0.f));
-                    // coords of right traingle
+        //glm::mat4 modelMatrix_2 = glm::mat4(1.f);
+        //modelMatrix_2 = glm::translate(modelMatrix_2, glm::vec3(590.f, 50.f, 0.f));
 
-        glm::mat4 projectionMatrix = glm::ortho(
-            0.f, // stretches to the left?
-            static_cast<float>(g_windowSize.x),
-            0.f, // stretches vertically?
-            static_cast<float>(g_windowSize.y),
-            -100.f, // ???
-            100.f); // ???
+        glm::mat4 projectionMatrix = glm::ortho(0.f, static_cast<float>(g_windowSize.x), 0.f, static_cast<float>(g_windowSize.y), -100.f, 100.f);
 
-        pDefaultShaderProgram->setMatrix4(
-            "projectionMat", projectionMatrix);
+        pDefaultShaderProgram->setMatrix4("projectionMat", projectionMatrix);
 
         pSpriteShaderProgram->use();
         pSpriteShaderProgram->setInt("tex", 0);
-        pSpriteShaderProgram->setMatrix4(
-            "projectionMat", projectionMatrix);
+        pSpriteShaderProgram->setMatrix4("projectionMat", projectionMatrix);
 
         auto lastTime = std::chrono::high_resolution_clock::now();
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(pWindow))
         {
+            pAnimatedSprite->setState("waterState");
+        
             auto currentTime = std::chrono::high_resolution_clock::now();
-            uint64_t duration = 
-                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    currentTime - lastTime).count();
-            pAnimatedSprite->update(duration );
+            uint64_t duration = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - lastTime).count();
+            lastTime = currentTime;
+            pAnimatedSprite->update(duration);
+
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
@@ -268,11 +241,11 @@ int main(int argc, char** argv)
             glBindVertexArray(vao);
             tex->bind();
 
-            pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_1);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            //pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_1);
+            //glDrawArrays(GL_TRIANGLES, 0, 3);
 
-            pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_2);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            //pDefaultShaderProgram->setMatrix4("modelMat", modelMatrix_2);
+            //glDrawArrays(GL_TRIANGLES, 0, 3);
 
             pSprite->render();
 
